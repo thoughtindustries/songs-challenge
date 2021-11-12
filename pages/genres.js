@@ -2,6 +2,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Genres from '../components/genres';
 import NavBar from '../components/navbar';
 
+// var scrollSpy = new bootstrap.ScrollSpy(document.body, {
+//   target: '#scrollspy-navbar'
+// })
 export default function GenresPage() {
   return (
     <main>
@@ -15,7 +18,7 @@ export default function GenresPage() {
       </section>
       <div className="bg-light">
         <NavBar />
-        <div className="mx-4">
+        <div className="mx-4 position-relative" data-bs-spy="scroll" data-bs-target="#scrollspy-navbar" data-bs-offset="0" tabindex="0">
           <Genres />
         </div>
       </div>

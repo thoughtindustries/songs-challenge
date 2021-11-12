@@ -61,9 +61,9 @@ export default function Genre({ genre }) {
       </div>
     );
   }
-
+// add id={genre} to link the href in the nav
   return (
-    <div className="container">
+    <div className="container pt-4" id={genre}>
       <h2 className="text-capitalize py-5">{genre}</h2>
       {data.SongsByGenre.length ? (
         <div className="row row-cols-1 row-cols-sm-3 row-cols-lg-5 g-3">

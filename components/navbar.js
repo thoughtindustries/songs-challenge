@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 export default function NavBar() {
     return (
-        <ul class="nav shadow-sm nav-pills nav-justified bg-light sticky-top">
+        <ul class="nav shadow-sm py-2 px-3 nav-pills nav-justified bg-light sticky-top">
         <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">
             Rap

@@ -15,7 +15,9 @@ export default function GenresPage() {
       </section>
       <div className="bg-light">
         <NavBar />
-        <Genres />
+        <div className="mx-4">
+          <Genres />
+        </div>
       </div>
     </main>
   );

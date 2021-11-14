@@ -2,7 +2,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 export default function NavBar() {
     return (
-        <ul id="scrollspy" className="nav shadow-sm py-2 px-3 nav-pills nav-justified bg-light sticky-top">
+        <nav id="scrollspy" className="sticky-top">
+        <ul className="nav shadow-sm py-2 px-3 nav-pills nav-justified bg-light ">
             <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#rap">
                 Rap
@@ -34,5 +35,6 @@ export default function NavBar() {
                 </a>
             </li>
         </ul>
+        </nav>
     );
 }

@@ -108,6 +108,7 @@ test('renders a genre', async () => {
     <div>
       <div
         class="container"
+        id="pop"
       >
         <h2
           class="text-capitalize py-5"

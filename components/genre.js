@@ -1,6 +1,8 @@
+import { useEffect, useRef, useState, useContext } from 'react';
 import { request, gql } from 'graphql-request';
 import useSWR from 'swr';
-
+import { NavStateContext } from '../helpers/navStateContext';
+import { } from 'react';
 import Song from './song';
 
 const SONGS_QUERY = gql`
@@ -40,7 +42,27 @@ const fetcher = genre =>
   });
 
 export default function Genre({ genre }) {
+  const { setActiveGenre } = useContext(NavStateContext)
   const { data, error } = useSWR([genre], fetcher);
+  const genreObserver = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && 100 < entry.intersectionRect.y < 400) {
+          setActiveGenre(genreObserver.current.id)
+        }
+      }
+      );
+    });
+    if (genreObserver.current) {
+      observer.observe(genreObserver.current);
+    }
+
+    return () => {
+      observer.unobserve(genreObserver.current)
+    };
+  }, [genreObserver.current, data])
 
   if (!data && !error)
     return (
@@ -63,13 +85,14 @@ export default function Genre({ genre }) {
   }
 
   return (
-    <div className="container">
-      <h2 className="text-capitalize py-5">{genre}</h2>
+    <div className="container" name={`${genre}`} id={`${genre}s`}>
+      <h2 className="text-capitalize py-5" style={{ marginTop: genre === 'rap' && '60px' }} >{genre}</h2>
       {data.SongsByGenre.length ? (
-        <div className="row row-cols-1 row-cols-sm-3 row-cols-lg-5 g-3">
+        <div className="row row-cols-1 row-cols-sm-3 row-cols-lg-5 g-3 position-relative" >
           {data.SongsByGenre.map(song => (
             <Song key={song.track_id} song={song} />
           ))}
+          <div ref={genreObserver} id={`${genre}`} style={{ height: '25px', position: 'absolute', bottom: '10px' }}/>
         </div>
       ) : (
         <p className="text-center">No Results!</p>

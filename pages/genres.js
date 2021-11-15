@@ -19,7 +19,7 @@ export default function GenresPage() {
       </section>
       <div className="bg-light" >
         <NavBar />
-        <div className="mx-4" data-bs-spy="scroll" data-bs-target="#scrollspy" data-bs-offset="0" tabindex="0">
+        <div className="mx-4" data-bs-spy="scroll" data-bs-target="#scrollspy" data-bs-offset="0" tabIndex="0">
           <Genres />
         </div>
       </div>

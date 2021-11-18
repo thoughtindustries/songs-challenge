@@ -40,7 +40,7 @@ const fetcher = genre =>
     genre
   });
 
-export default function Genre({ genre }) {
+export default function Genre({ genre, active, setActive }) {
   const { data, error } = useSWR([genre], fetcher);
   const containerRef = useRef(null)
 
@@ -89,7 +89,7 @@ export default function Genre({ genre }) {
   }
 // add id={genre} to link the href in the nav. This will populate ids for all the sections
   return (
-    <div className="container pt-4" id={genre}>
+    <div className="container pt-4" id={genre} ref={containerRef}>
       <h2 className="text-capitalize py-5">{genre}</h2>
       {data.SongsByGenre.length ? (
         <div className="row row-cols-1 row-cols-sm-3 row-cols-lg-5 g-3">

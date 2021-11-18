@@ -42,27 +42,44 @@ const fetcher = genre =>
 
 export default function Genre({ genre, active, setActive }) {
   const { data, error } = useSWR([genre], fetcher);
+  // element we want to observe in the virtual DOM
   const containerRef = useRef(null)
 
     const callbackFunction = (entries) => {
+      // console.log('entries:', entries)
       const [ entry ] = entries
-      if(entry.isIntersecting && active !== genre) {
+      // attempted to pass in entry as an argument but it did not work.
+      // console.log('entry', entry)
+
+      // active !== genre to make sure if active is already set as genre it wouldn't continue to update state. 
+      // if(entry.isIntersecting && active !== genre) {
+      //   setActive(genre)
+      // } else {
+      //   return
+      // }
+      if(entry.isIntersecting) {
         setActive(genre)
       } else {
         return
       }
     }
+    // options object contains required properties
     const options = {
+      // element used as viewport for checking visibility of target
       root: null,
       rootMargin: "0px",
       // must show all of container
-      threshold: 1.0
+      threshold: 0.85
     }
 
+    // creates observer on first render and every render after adds intersection observer to component. Run with changes to containerRef and options
     useEffect(() => {
+      // constructor function for intersectionobserver
       const observer = new IntersectionObserver(callbackFunction, options)
+      // if containerRef exists so it doesn't observe something that hasn't been created yet
       if (containerRef.current) observer.observe(containerRef.current)
 
+      // clean up function to prevent memory leaks. Stops observing once component unmounts
       return () => {
         if(containerRef.current) observer.unobserve(containerRef.current)
       }
@@ -87,7 +104,8 @@ export default function Genre({ genre, active, setActive }) {
       </div>
     );
   }
-// add id={genre} to link the href in the nav. This will populate ids for all the sections
+// add id={genre} to link the href in the nav. This will populate ids for all the genres with the genre name.
+// add ref={containerRef} to div so intersection oberserver knows which element to observe
   return (
     <div className="container pt-4" id={genre} ref={containerRef}>
       <h2 className="text-capitalize py-5">{genre}</h2>

@@ -1,8 +1,9 @@
 import { request, gql } from 'graphql-request';
+import { useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
 
 import Song from './song';
-
+// intersection observer API - provides a way to asynchronously observe changes in the insection of a target element with an ancestor element or with a top-level document
 const SONGS_QUERY = gql`
   query HomePage($genre: String!) {
     SongsByGenre(genre: $genre) {
@@ -41,6 +42,31 @@ const fetcher = genre =>
 
 export default function Genre({ genre }) {
   const { data, error } = useSWR([genre], fetcher);
+  const containerRef = useRef(null)
+
+    const callbackFunction = (entries) => {
+      const [ entry ] = entries
+      if(entry.isIntersecting && active !== genre) {
+        setActive(genre)
+      } else {
+        return
+      }
+    }
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      // must show all of container
+      threshold: 1.0
+    }
+
+    useEffect(() => {
+      const observer = new IntersectionObserver(callbackFunction, options)
+      if (containerRef.current) observer.observe(containerRef.current)
+
+      return () => {
+        if(containerRef.current) observer.unobserve(containerRef.current)
+      }
+    }, [containerRef, options])
 
   if (!data && !error)
     return (
@@ -61,7 +87,7 @@ export default function Genre({ genre }) {
       </div>
     );
   }
-// add id={genre} to link the href in the nav
+// add id={genre} to link the href in the nav. This will populate ids for all the sections
   return (
     <div className="container pt-4" id={genre}>
       <h2 className="text-capitalize py-5">{genre}</h2>

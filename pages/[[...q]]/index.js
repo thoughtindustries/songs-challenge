@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 
 import Songs from '../../components/songs';
 import Header from '../../components/header';
+import searchString from '../../components/util';
+
 
 export async function getServerSideProps({ params }) {
   let [pageOrInitialSearch, page] = params.q || [];
@@ -27,7 +29,9 @@ export default function App({ initialSearch, page }) {
   const router = useRouter();
 
   const performSearch = newSearch => {
-    router.replace({ pathname: `/${newSearch}` });
+    //Inorder to fix the bug implemented a util which checks for ' and replaces it with ASCII encode
+    const str = searchString(newSearch);
+    router.replace({ pathname: `/${str}` });
   };
 
   return (

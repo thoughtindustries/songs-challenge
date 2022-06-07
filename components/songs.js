@@ -3,6 +3,8 @@ import useSWR from 'swr';
 import Link from 'next/link';
 
 import Song from './song';
+import searchString from './util';
+
 
 const SONGS_QUERY = gql`
   query HomePage($page: Int!, $search: String) {
@@ -43,8 +45,11 @@ const SONGS_QUERY = gql`
   }
 `;
 
-const fetcher = (page, search) =>
-  request('http://localhost:3000/api/graphql', SONGS_QUERY, { page, search });
+const fetcher = (page, search) =>{
+  //Inorder to fix the bug implemented a util which checks for ' and replaces it with ASCII encode
+  const str = search ? searchString(search) : '';
+  return request('http://localhost:3000/api/graphql', SONGS_QUERY, { page, str });
+}
 
 export default function Songs({ page, search }) {
   const { data, error } = useSWR([page, search], fetcher);

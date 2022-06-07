@@ -1,6 +1,6 @@
 import Genre from './genre';
 
-const GENRES = ['rap', 'pop', 'edm', 'r&b', 'rock', 'latin'];
+export const GENRES = ['rap', 'pop', 'edm', 'r&b', 'rock', 'latin'];
 
 export default function Genres() {
   return (
